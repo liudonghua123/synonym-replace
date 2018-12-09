@@ -2,6 +2,7 @@
 import argparse
 import jieba
 import io
+import os.path
 from pathlib import Path
 
 # https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
@@ -15,10 +16,14 @@ def str2bool(v):
 
 def argParse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--dict', nargs='?', const='synonym.txt', type=str, default='synonym.txt', help='指定内置同义词字典文件路径，默认为当前路径下的 synonym.txt')
-    parser.add_argument('-u', '--userDict', nargs='?', const='userSynonym.txt', type=str, default='userSynonym.txt', help='指定自定义的同义词字典文件路径，默认为当前路径下的 userSynonym.txt')
-    parser.add_argument('-i', '--input', nargs='?', const='demo.txt', type=str, default='demo.txt', help='指定输入的文件，默认为当前路径下的 demo.txt')
-    parser.add_argument('-o', '--output', nargs='?', const='result.txt', type=str, default='result.txt', help='指定输出的文件，默认为当前路径下的 result.txt')
+    defaultDictPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'synonym.txt')
+    defaultUserDictPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'userSynonym.txt')
+    defaultInputPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'demo.txt')
+    defaultOutputPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'result.txt')
+    parser.add_argument('-d', '--dict', nargs='?', const=defaultDictPath, type=str, default=defaultDictPath, help='指定内置同义词字典文件路径，默认为当前路径下的 synonym.txt')
+    parser.add_argument('-u', '--userDict', nargs='?', const=defaultUserDictPath, type=str, default=defaultUserDictPath, help='指定自定义的同义词字典文件路径，默认为当前路径下的 userSynonym.txt')
+    parser.add_argument('-i', '--input', nargs='?', const=defaultInputPath, type=str, default=defaultInputPath, help='指定输入的文件，默认为当前路径下的 demo.txt')
+    parser.add_argument('-o', '--output', nargs='?', const=defaultOutputPath, type=str, default=defaultOutputPath, help='指定输出的文件，默认为当前路径下的 result.txt')
     parser.add_argument('-r', '--replaceWithDict', nargs='?', const=True, type=str2bool, default=True, help='指定是否使用内置同义词字典替换，默认值是 True')
     parser.add_argument('-p', '--replaceWithUserDict', nargs='?', const=True, type=str2bool, default=True, help='指定是否使用用户自定义同义词字典替换，默认值是 True')
     args = parser.parse_args()
